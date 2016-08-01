@@ -16,8 +16,8 @@ public class MirrorEncryption
         try 
         {
             getMatrix();
-            //readFile("input.txt");
-            findChar('b');
+            readFile("input.txt");
+            //findChar('M');
             
         } 
         catch (IOException e) 
@@ -29,23 +29,18 @@ public class MirrorEncryption
     
     public static void mirror(int x, int y, int rOff, int cOff)
     {
+    	StringBuilder str = new StringBuilder();
     	do
     	{
 			
 			//heading down
 			if(rOff == 1)
 			{
-				System.out.println(x + "," + y + "," + rOff + "," + cOff);
-				System.out.println(matrix[x][y]);
 				x += rOff;
 				if(matrix[x][y] == '/')//move left
 				{
-					System.out.println(x + "," + y + "," + rOff + "," + cOff);
-					System.out.println(matrix[x][y]);
-					System.out.println("moving left");
-	
-					rOff = -1;
-					cOff = 0;
+					rOff = 0;
+					cOff = -1;
 				}else if (matrix[x][y] == '\\') //move right
 					{
 						rOff = 0;
@@ -53,51 +48,52 @@ public class MirrorEncryption
 					}
 			}
 			//heading up
-//			else if(rOff == -1)
-//			{
-//				y += rOff;
-//				if(matrix[x][y] == '/')//move right
-//				{
-//					rOff = 0;
-//					cOff = -1;
-//				}else if (matrix[x][y] == '\\') //move left
-//					{
-//						rOff = 0;
-//						cOff = 1;
-//					}
-//			}
-//			//heading right
-//			else if(cOff == 1)
-//			{
-//				x += cOff;
-//				if(matrix[x][y] == '/')//move up
-//				{
-//					rOff = -1;
-//					cOff = 0;
-//				}else if (matrix[x][y] == '\\') //move down
-//					{
-//						rOff = 1;
-//						cOff = 0;
-//					}
-//			}
-//			//heading left
-//			else if(cOff == -1)
-//			{
-//				x += cOff;
-//				if(matrix[x][y] == '/')//move down
-//				{
-//					rOff = 1;
-//					cOff = 0;
-//				}else if (matrix[x][y] == '\\') //move up
-//					{
-//						rOff = -1;
-//						cOff = 0;
-//					}
-//			}
-			
+			else if(rOff == -1)
+			{
+				x += rOff;
+				if(matrix[x][y] == '/')//move right
+				{
+					rOff = 0;
+					cOff = 1;
+				}else if (matrix[x][y] == '\\') //move left
+					{
+						rOff = 0;
+						cOff = -1;
+					}
+			}
+			//heading right
+			else if(cOff == 1)
+			{
+				y += cOff;
+				if(matrix[x][y] == '/')//move up
+				{
+					rOff = -1;
+					cOff = 0;
+				}else if (matrix[x][y] == '\\') //move down
+					{
+						rOff = 1;
+						cOff = 0;
+					}
+			}
+			//heading left
+			else if(cOff == -1)
+			{
+				y += cOff;
+				if(matrix[x][y] == '/')//move down
+				{
+					rOff = 1;
+					cOff = 0;
+				}else if (matrix[x][y] == '\\') //move up
+					{
+						rOff = -1;
+						cOff = 0;
+					}
+			}
+		
     	}
-    	while(x != 14 || y != 14 || x != 0 || y != 0);
-    	
+    	while(x > 0 && y > 0 && x < 14 && y < 14 );
+    	str.append(matrix[x][y]);
+    	System.out.print(matrix[x][y]);
     }
     
     
@@ -109,7 +105,7 @@ public class MirrorEncryption
     	while((num=br.read()) != -1)
     	{
     		ch = (char)num;
-    		//findChar(ch);
+    		findChar(ch);
     	}
     	br.close();
     }
@@ -118,20 +114,23 @@ public class MirrorEncryption
     {
     	if(top.indexOf(ch) >= 0)
     	{
-    		location = new int[0][top.indexOf(ch) + 1];
     		int coordinate = top.indexOf(ch) + 1;
-    		System.out.println("x-coor: " + coordinate);
     		mirror(0, coordinate, 1, 0);
-    		//System.out.println("location: " + matrix[0][top.indexOf(ch) + 1]);
+    
     	}else if(bottom.indexOf(ch) >= 0)
     	{
-    		//location = new int[0][top.indexOf(ch) + 1];
+    		int coordinate = bottom.indexOf(ch) + 1;
+    		mirror(14, coordinate, -1, 0);
+    		
     	}else if(right.indexOf(ch) >= 0)
     	{
-    		//location = new int[0][top.indexOf(ch) + 1];
+    		int coordinate = right.indexOf(ch) + 1;
+    		mirror(coordinate, 14, 0, -1);
+    		
     	}else if(left.indexOf(ch) >= 0)
     	{
-    		//location = new int[0][top.indexOf(ch) + 1];
+    		int coordinate = left.indexOf(ch) + 1;
+    		mirror(coordinate, 0, 0, 1);
     	}
     	
     	
